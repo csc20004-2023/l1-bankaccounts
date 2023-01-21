@@ -1,0 +1,21 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Start web server
+    init: python -m http.server 8000
+  - name: Setup 
+    command: >
+          mvn clean;
+          mvn compile javadoc:javadoc -DskipTests=true;
+          theia_url=$(gp url);
+          myurl=https://8000-${theia_url:8};
+          export JAVADOC_URL=$myurl/target/site/apidocs/index.html;
+          export JAVA_TOOL_OPTIONS=$JAVA_TOOL_OPTIONS" -Dsun.java2d.xrender=false"
+ports:
+  - port: 8000
+    onOpen: ignore
+  - port: 6080
+    onOpen: ignore
+  - port: 5900
+    onOpen: ignore
